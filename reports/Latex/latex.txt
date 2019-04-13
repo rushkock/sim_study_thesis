@@ -1,0 +1,175 @@
+\documentclass[12pt,man]{apa6}
+\usepackage[utf8]{inputenc}
+\usepackage{apacite}
+
+\shorttitle{Welch \textit{t}-test compared to permutation test}
+
+\begin{document}
+\linespread{1.25}
+
+\tableofcontents
+\newpage
+\section{Introduction}
+In psychological research parametric tests are used more often than non-parametric tests \cite{edgington1974new,goodwin1985analysis,troncoso2010statistical}. The \textit{t}-test is one of these parametric tests that is widely used in research. It is used to statistically test the differences between means. There are many different types of \textit{t}-test s such as the Student t test, Welch \textit{t}-test and Yuen \textit{t}-test \cite{student1908probable,welch1947generalization,yuen1974two}. The tests differ in terms of the assumptions they make. The three central assumptions of the \textit{t}-test are independence, homogeneity of variances and normality. The permutation test is a non-parametric tests also used to compare means. It was first discussed by \citeA{fisher1937design}. In the permutation test all possible permutations are calculated for a sample, this forms a test distribution. The null hypothesis can be tested under this distribution \cite{howell2009statistical}.
+
+All statistical tests may lead to wrong conclusions, we distinguish between two types of errors. The type I error and type II error. Type I error is when $H_0$ is rejected when it should not have been. Type II error is when $H_0$ is not rejected when it should have been. We want both of these errors to be as low as possible. As the type II error decreases the power of a test increases. The power is the probability that $H_0$ is rejected when $H_1$ is true \cite{howell2009statistical}.
+
+In this thesis we will compare the Welch \textit{t}-test with the permutation test in terms of type I error and power. More specifically we will focus on the comparison between the two tests when the assumption of homogeneity is violated. Welch \textit{t}-test was chosen because it provides more reliable type I error rates when the assumption of homogeneity of variance is not met. Compared to Student's \textit{t}-test, Welch's \textit{t}-test loses some statistical power. However, this loss is very small. \cite{delacre2017psychologists}.
+
+In the following two sections the assumptions of the two tests are discussed in depth. This is followed by a review of existing literature comparing the two tests. Then the research questions and hypothesis are discussed. Followed by a description of the simulation study and the results of the study. Finally we will end with a discussion of the findings and conclude with which test performs better when the assumption of homogeneity is violated.
+
+
+\subsection{Assumptions of the t test}
+The \textit{t}-test has a number of assumptions. First of all, it assumes independent errors. This means that the residuals should not be able to be predicted above chance. This assumption would be violated if within a group, one participant can influence another one. This assumption cannot be tested. It must be controlled for based on the design of the study.
+
+Secondly, it assumes that the the sampling distribution is normal. Many other parametric tests have this assumption. The reason why the normal distribution was chosen, can be explained by the central limit theorem (CLT). The CLT says that when starting with random and independent samples, the distribution of sample means will be approximately normally distributed if the sample size is large enough. As a simple example, say we flip a coin N number of times. Then we repeat the procedure many times. If N is large enough then our sampling distribution will be normal. The question remains as to what is large enough. In general it depends on what the sample looks like. However, it is believed that if $N \geq 30$ the sampling distribution of the mean is normal. Thus, if the sample size is greater than or equal to 30 then this assumption is fulfilled. The distribution of the data can be visually tested with a Q-Q/P-P plot. However, more often statistical tests are used namely, the Kolmogorov–Smirnov-test, the Shapiro-Wilk’s W test or Skewness and Kurtosis can be checked. \cite{howell2009statistical}.
+
+Another assumption is that there are no outliers. As the means of the groups are compared an outlier can greatly skew the mean which can lead to incorrect conclusions. There are many different ways to detect and deal with outliers. Some tests that can be used are Grubbs' test and Dixon's test. For a more detailed analysis on outliers and testing read \citeA{quesenberry1961some} or \citeA{david1965performance}.
+
+Finally, there is the assumption of homogeneity of variances. Variance $(\sigma^2)$ referes to the way the scores are distributed around the mean. Homogeneity of variances means that the variances across groups are considered equal. This assumption is important because if the scores in the one group were spread differently, compared to the second group before any treatment was given, then these groups are no longer comparable \cite{salkind2010encyclopedia}. The null hypothesis when testing this assumption is  $H_0 : \sigma_1^2 = \sigma_2^2$ or $H_0 : \frac{\sigma_1^2}{\sigma_2^2} = 1 $. It is most commonly tested using the levene's test \cite{schultz1985levene}. However, other tests include Hartley's F-max, Cochran's and Barlett’s test \cite{conover1981comparative}.
+
+There are many studies that show that the \textit{t}-test is robust against violations of the assumptions \cite<e.g.,>{sawilowsky1992more, bradley1978robustness}. In general it is believed that the \textit{t}-test is robust against non-normality if the samples size is greater or equal to 30. The \textit{t}-test is believed to be robust against violation of the assumption of homogeneity if the group sizes are approximately equal. However, when the assumption of homogeneity is violated, the Welch \textit{t}-test can be used. It is robust against this violation \cite{howell2009statistical, delacre2017psychologists}.
+
+\subsection{Assumptions of the permutation test}
+There are two kinds of probability models namely the randomization model and the population model. In the randomization model, the subjects are randomly assigned to a condition. In the population model subjects are randomly sampled from a population \cite{ernst2004permutation}. The name permutation test is often used to refer to both the randomization model and population model because in many cases they can be equivalent to each other. The two tests are also referred to as randomization test and permutation test \cite{nichols2002nonparametric}.
+
+The randomization and permutation tests assume exchangeability. This assumption has different implications for the tests. One implication is the stable unit treatment value assumption (SUTVA). In \citeA{rubin1980randomization} he explained the idea of SUTVA. In an experiment, subjects/units $i$ can be exposed to treatment $j$. Therefore, $Y_{i_j}$ is the observed effect of unit $i$ in treatment $j$. In this experiment each unit is only part of one treatment group at a time. Thus, $Y_{i_1}$ and $Y_{i_2}$ cannot be observed at the same time, we have to make inferences about the value that was not observed.
+The effect of treatment 1 on unit $i$ should be independent of the effect on other units in any treatment group, otherwise SUTVA will be violated.
+
+In the randomization model exchangeability should be a given because participants are randomly assigned to the groups and should therefore be thought of as interchangeable. However, this cannot always be assumed for the population model.
+
+For the population model the random assignment was not possible therefore exchangeability cannot be directly assumed. Thus, there is the assumption that the distributions of the two groups have approximately the same shape \cite{nichols2002nonparametric}.
+
+These permutation tests are non-parametric tests. However, there are parametric permutation tests such as the permutation \textit{t}-test s which then takes the assumptions of the \textit{t}-test \cite{toothaker1972empirical,mendecs2010comparison}.
+
+To conclude, there is a subtle difference between the two tests in terms of who the population is. In this thesis the randomization model is used. Thus, the assumption of exchangeability is met. The randomization model is chosen because the population model is often not used in psychological studies. Convenient sampling is used instead \cite{fife2013achilles}. In the randomization model convenient sampling can be used as long as the participants are randomly distributed between groups. In the population model convenient sampling cannot be used because the researchers are not sampling from the population.
+
+\subsection{Literature review}
+In psychology the \textit{t}-test is often used more than permutation tests \cite<e.g.,>{goodwin1985analysis}. However, often times we do not know the extent to which the assumptions are met in the population \cite{hunter1993some}. Compared to the t test, the permutation test has less assumptions. It assumes exchangeability. However, the randomization test automatically meets this assumption. Thus, the question of how the two tests compare in terms of type I error and power remains. In this section we review some literature comparing the two tests.
+
+\citeA{toothaker1972empirical} wrote a dissertation on comparing the permutation \textit{t}-test with Student's \textit{t}-test and the Mann Whitney U test. He performed a simulation study using sample sizes ranging from 2 to 5. The study concluded that the permutation \textit{t}-test does not outperform Student's \textit{t}-test and Mann Whitney U test and the latter two should be preferred when comparing means.
+
+\citeA{ludbrook1998permutation} compared permutation tests with \textit{t}-test and \textit{F}-test in Biomedical Research. They found that researchers in this field often choose an \textit{F}-test or \textit{t}-test instead of a permutation test even if the assumptions are not met. They conclude that exact permutation or randomization tests should be preferred in biomedical research.
+
+\citeA{hughes2010comparison} conducted a simulation study, she compared the two sample \textit{t}-test with the two sample exact permutation test. She used 6 non-normal distributions, tested at 3 different significance levels and the sample sizes ranged from 2 to 6. She concluded that the permutation test should be preferred, especially if power is very important for a study.
+
+Most relevant to this thesis is the simulation study performed by \citeA{mendecs2010comparison}. They compared the ANOVA \textit{F}-test and Welch \textit{t}-test with the permutation \textit{F}-test and the permutation Welch t test. They used 3 different distributions, 5 different group sizes ranging from 5 to 15 and 3 different group variances namely, equal variances $(\sigma^2_1 = 1, \sigma^2_2 = 1, \sigma^2_3 = 1)$, a small deviation $(\sigma^2_1 = 1, \sigma^2_2 = 1, \sigma^2_3 = 4)$ and a larger deviation $(\sigma^2_1 = 1, \sigma^2_2 = 1, \sigma^2_3 = 9)$. By comparing these groups they observed the effects of non-normality and heterogeneity. They concluded that when the assumption of homogeneity and normality is violated, the permutation \textit{F}-test should be used. When the assumption of normality is violated but equal variances are assumed then the permutation Welch \textit{t}-test should be used.
+
+In all these papers very small sample sizes were used, the largest group size being 15. This is not representative of current psychological studies. We can see in the study from \citeA{kuhberger2014publication} that only 14.9\% of studies had a sample size of 15 or smaller.  Moreover, only one study compared the two tests when the homogeneity assumption is violated. \citeA{mendecs2010comparison} also looked at the effect of different group sizes. However, the largest deviation between groups was 10. Larger deviations when comparing the two tests have not been studied.
+
+This thesis aims to observe the effects on both tests when the assumption of homogeneity is violated. This assumption is not widely explored. Most literature observe the effect of non normality \cite<e.g.,>{hughes2010comparison, weber2009comparative}. Moreover, the \textit{t}-test is robust against violation of homogeneity of variances when the group sizes are approximately equal \cite{howell2009statistical}. Therefore, there should be more research on the effect of different group sizes. We look at small deviations as well as large deviations between group sizes. The goal of this thesis is to provide relevant results that can be used in psychological research. To achieve this goal sample sizes that are often used in psychology will be chosen and the randomization test which is more common in psychological research will be used.
+
+\subsection{Research questions}
+To be able to compare the Welch \textit{t}-test with the permutation test when the variances are not equal, we look at different circumstances that affect the tests. The tests are compared in terms of type I error and power. In this section, the questions and sub-questions and hypothesis are discussed.
+
+The research question of this thesis is: How does the permutation test compare to the Welch t-test under violation of the assumption of homogeneity of variances? To answer this question the following sub-questions will be explored.
+\begin{itemize}
+    \item How does the permutation test compare to Welch \textit{t}-test under no violation of the assumption of homogeneity of variances?
+    \item What is the effect of sample size on the performance of the permutation test under violation of the assumption of homogeneity of variances?
+    \item What is the effect of sample size on the performance of the Welch t-test under violation of the assumption of homogeneity of variances?
+    \item What is the effect of unequal group sizes on the performance of the permutation test under violation of the assumption of homogeneity of variances?
+    \item What is the effect of unequal group sizes on the performance of the Welch t-test under violation of the assumption of homogeneity of variances?
+\end{itemize}
+
+We hypothesize that due to the robustness of the Welch \textit{t}-test against violation of homogeneity \cite{delacre2017psychologists}, the Welch \textit{t}-test outperforms the permutation test.
+
+\section{Methods}
+To compare the \textit{t}-test and permutation test, a simulation study is conducted using the programming language R \cite{R}. The type I error and power of the Welch \textit{t}-test and permutation test are computed and compared against each other.
+
+\subsection{Sample sizes}
+To select sample sizes that are relevant to psychology the data provided by \citeA{kuhberger2014publication} was used. They investigated whether effect size is independent from sample size in psychological research. To do this they randomly sampled 1000 articles from 22 different psychological disciplines. All these articles were published in 2007. They excluded many articles because they did not meet their criteria. The final data set contained 531 articles. From these articles 529 sample sizes were reported.
+
+From these articles we selected 3 different sample sizes. First of all, a small sample size used in psychology, namely $N = 10$. Despite this being a small sample size, it was reported in 13 articles. Less than 10\% of the articles have a sample size that is smaller than 10 (8.9\%). Secondly, a medium sample size that is commonly used was chosen. This is $N = 60$. It was reported 11 times and almost half of the sample sizes are smaller than or equal to 60 (47.6\%). The third sample size is an extremely large sample size, namely $N = 1000$. Only 10\% of the sample sizes that were reported were larger than 1000.
+
+To determine the effect of group ratios 8 different ratios were chosen. The first group sizes are equal this is called condition 1. The other groups have a downwards or upwards deviation. The second group sizes have a small deviation of 25\% (condition 2a and 2b). The third group sizes (condition 3a and 3b) deviate with 50\% and condition 4a and 4b have a large deviation of 75\%. This creates 24 different conditions each with slightly different group sizes (see Table \ref{table:groupsize}).
+
+\subsection{Simulation}
+Data was simulated with a normal distribution. The mean was 0 and the standard deviation was 1. When testing for type I error both means were kept equal. If the \textit{p}-value of either test is smaller than $\alpha = 0.05$, then there is a type I error. The power is calculated with 1 - type II error. Type II error was simulated with 0 as the mean of one group and 1 as the mean of the other group. This is a mean that deviates by one standard deviation. If the \textit{p}-value of either test is larger than $\alpha = 0.05$, then there is a type II error.
+
+To simulate the violation of the assumption of homogeneity of variances, the standard deviation $(\sigma)$ was altered. This is because variance is the squared standard deviation $(\sigma^2)$. When there is no violation the variances of both groups are equal $(\sigma^2_1 = 1 : \sigma^2_2 = 1)$. However, when the assumption is violated, the two variances are not equal. Six different deviations were chosen to simulate this. A downwards and upwards deviation of 25\%, 50\%, 75\% and an upwards deviation of 300\% (see Table \ref{table:SD}). Each condition was performed with all seven deviations. The simulation was essentially performed 7 * 8 times for all 3 sample sizes. \\
+
+We also varied the effect size (ES). The ES is the standardized mean difference between two groups \cite{coe2002s}. If there is a strong effect, the ES will be large. This means that the probability that the statistical test is significant is also large. Therefore, different effect sizes have different implications. In this thesis Cohen's three benchmark effect sizes were chosen, namely a small ES of 0.2, a medium ES of 0.5 and a large ES of 0.8 \cite{cohen2013statistical}.
+
+Each simulation was repeated 10000 times. The code is included in the appendix. The number of type I and type II errors that occurred in 10000 were recorded for each condition. The data was simulated using \texttt{rnorm()}. The Welch \textit{t}-test was performed using the \texttt{t.test()} formula in R with the argument \texttt{var.equal} set to False. The permutation test was performed using the library \emph{perm} \cite{perm}. The Monte Carlo sampling technique was used during the permutation test. Ideally all permutations are performed in a permutation test. However, with larger sample sizes the number of permutations become very large. Therefore, the Monte Carlo sampling technique should be used. This technique randomly chooses test statistics from the permutation distribution. From this random sample the \textit{p}-value for the permutation test can be calculated \cite{ernst2004permutation, hastings1970monte}. We can conclude that one test outperforms another when the type I and type II error for one test is smaller than or equal to 0.05 and the type I and type II error for the other test is larger than 0.05. If both tests have a type I and type II error smaller or equal to 0.05, then we look at how big the difference is between the two tests. The test with the smaller errors outperforms the other. \\
+
+
+
+\begin{table}[]
+\addtolength{\tabcolsep}{5pt} % some more room between columns
+\caption{Methods}
+\label{table:groupsize}
+
+\newcommand*{\MyIndent}{\hspace*{0.5cm}}%
+\begin{tabular}{lll}
+\thickline
+Sample Size & Group Ratios \\
+\hline
+Small N = 10      &               \\
+\MyIndent Condition 1 &  $N_1 = 10: N_2 = 10$   \\
+\MyIndent Condition 2a &  $N_1 = 10: N_2 = 8$   \\
+\MyIndent Condition 2b &  $N_1 = 10: N_2 = 13$   \\
+\MyIndent Condition 3a &  $N_1 = 10: N_2 = 5$  \\
+\MyIndent Condition 3b &  $N_1 = 10: N_2 = 15$  \\
+\MyIndent Condition 4a &  $N_1 = 10: N_2 = 3$  \\
+\MyIndent Condition 4b &  $N_1 = 10: N_2 = 18$  \\
+Medium N = 60      &                     \\
+\MyIndent Condition 1 &  $N_1 = 60: N_2 = 60$   \\
+\MyIndent Condition 2a &  $N_1 = 60: N_2 = 45$ \\
+\MyIndent Condition 2b &  $N_1 = 60: N_2 = 75$   \\
+\MyIndent Condition 3a &  $N_1 = 60: N_2 = 30$   \\
+\MyIndent Condition 3b &  $N_1 = 60: N_2 = 90$  \\
+\MyIndent Condition 4a &  $N_1 = 60: N_2 = 15$  \\
+\MyIndent Condition 4b &  $N_1 = 60: N_2 = 105$  \\
+Large N = 1000    &                  \\
+\MyIndent Condition 1 &  $N_1 = 1000: N_2 = 1000$  \\
+\MyIndent Condition 2a &  $N_1 = 1000: N_2 = 750$  \\
+\MyIndent Condition 2b &  $N_1 = 1000: N_2 = 1250$ \\
+\MyIndent Condition 3a &  $N_1 = 1000: N_2 = 500$   \\
+\MyIndent Condition 3b &  $N_1 = 1000: N_2 = 1500$  \\
+\MyIndent Condition 4a &  $N_1 = 1000: N_2 = 250$   \\
+\MyIndent Condition 4b &  $N_1 = 1000: N_2 = 1750$  \\
+\thickline
+\end{tabular}
+
+\end{table}
+
+\begin{table}[]
+ \caption{Standard Deviations}
+    \label{table:SD}
+    \begin{tabular}{l}
+     \thickline
+        Standard Deviation \\
+        \hline
+        $\sigma_1 = 1 : \sigma_2 = 1$  \\
+        $\sigma_1 = 1 : \sigma_2 = 0.75$ \\
+        $\sigma_1 = 1 : \sigma_2 = 1.25$ \\
+        $\sigma_1 = 1 : \sigma_2 = 0.50$ \\
+        $\sigma_1 = 1 : \sigma_2 = 1.50$  \\
+        $\sigma_1 = 1 : \sigma_2 = 0.25$ \\
+        $\sigma_1 = 1 : \sigma_2 = 1.75$ \\
+        $\sigma_1 = 1 : \sigma_2 = 3$ \\
+        \thickline
+    \end{tabular}
+\end{table}
+
+\begin{table}[]
+    \caption{Mean difference for each test based on sample size}
+    \begin{tabular}{lrrr}
+    \toprule
+    {}Sample Size & Permutation test &  \textit{t}-test &  Difference \\
+    \midrule
+    3  &  0.672525 &  0.676225 &  0.003700 \\
+    5  &  0.644400 &  0.650775 &  0.006375 \\
+    8  &  0.620225 &  0.616900 &  0.003325 \\
+    10 &  0.607200 &  0.603950 &  0.003250 \\
+    13 &  0.588375 &  0.586200 &  0.002175 \\
+    15 &  0.577700 &  0.576225 &  0.001475 \\
+    18 &  0.564325 &  0.565600 &  0.001275 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\bibliographystyle{apacite}
+\bibliography{mybibliography}
+
+\end{document}
