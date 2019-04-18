@@ -2,6 +2,8 @@
 # Name: Ruchella Kock
 # Student number: 1815458
 import pandas as pd
+import numpy as np
+import researchpy as rp
 import matplotlib.pyplot as plt
 
 
@@ -24,11 +26,20 @@ class Helpers(object):
         df = pd.read_csv(file)
         # rename columns
         names = ["samp1", "samp2", "es", "sd1", "sd2", "perm", "t_test",
-                 "pval", "typeI", "sig" ]
+                 "pval", "typeI", "sig"]
         df.columns = names
 
         # make a new column with the difference between the two tests
-        df["dif"] = df["t_test"] - df["perm"]
+        df["dif"] = df["perm"] - df["t_test"]
+        return df
+
+    def get_df_all_results(self, file):
+        # read csv into dataframe
+        df = pd.read_csv(file)
+        # rename columns
+        names = ["index", "samp1", "samp2", "es", "sd1", "sd2", "k", "perm",
+                 "t_test"]
+        df.columns = names
         return df
 
     def get_min_max(self, groups, key):
@@ -50,10 +61,14 @@ class Helpers(object):
         group = groups.get_group(key)
         perm = group["perm"].mean()
         t_test = group["t_test"].mean()
-        means = {"perm": perm, "t_test": t_test}
+        sig = group["sig"].iloc[0]
+        means = {"perm": perm, "t_test": t_test, "sig": sig}
         return means
 
     def get_descriptive(self, groups, key):
+        """
+        Get the descriptive statistics of a group
+        """
         group = groups.get_group(key)
         perm = group["perm"].describe()
         t_test = group["t_test"].describe()
@@ -61,6 +76,9 @@ class Helpers(object):
         return means
 
     def boxplots(self, groups, nrows, ncols, type):
+        """
+        make a boxplot with n number of rows and n number of columns
+        """
         fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(6, 9.3), sharey="row")
 
         fig.subplots_adjust(left=0.03, right=0.97, hspace=0.3, wspace=0.05)
@@ -93,7 +111,7 @@ class Helpers(object):
             # (thus each sample size in this case)
             mean = self.get_mean(groups, key)
             # calculate the difference between means
-            mean.update({"Difference": abs(mean["perm"] - mean["t_test"])})
+            mean.update({"Difference": mean["perm"] - mean["t_test"]})
             # get the descriptive statistics for each test for each sample size
             describe = self.get_descriptive(groups, key)
 
@@ -110,3 +128,90 @@ class Helpers(object):
         #     results_df = results_df.reindex([1, 0.75, 1.25, 0.50,
         #                                      1.50, 0.25, 1.75, 3])
         return results_df
+
+    def mcnemar(self, df):
+        """
+        This function performs the mcnemar test and returns a df with the results
+        """
+        table, res = rp.crosstab(df['perm'], df['t_test'], test='mcnemar')
+        return res
+
+    def means_and_pval(self, means, df):
+        """
+        This function combines the dataframe with means from get_mean_df with
+        its pvalues from the mcnemar test
+        """
+        list = np.arange(len(df))
+        for i, (key, item) in zip(list, df):
+            res = self.mcnemar(item)
+            means.loc[means.index[i], "p_value"] = res["results"][1]
+        return means
+
+    def bar_chart(self, df, n_groups, dict):
+        """
+        This function makes a barchart for each group size based on a given df
+        """
+        fig, ax = plt.subplots()
+        # choose bar width (standard 0.8 chosen)
+        bar_width = 0.35
+        # get an index to set the ticks for the x axis
+
+        index = np.arange(n_groups)
+        indexes = df.index.tolist()
+        print(indexes)
+        df["index"] = indexes
+        #df["effect_size"] = df["index"].apply(lambda x: x[0])
+
+        # make barchart for permutation test
+        ax.bar(index, df["perm"], bar_width, color='b', linewidth=4,
+               label='Permutation test')
+        # make barchart for t-test
+        ax.bar(index + bar_width, df["t_test"], bar_width, color='r',
+               label='t-test')
+
+        ax.set_xlabel(dict["xlabel"])
+        ax.set_ylabel(dict["ylabel"])
+        ax.set_title(dict["title"])
+        ax.set_xticks(index + bar_width / 2)
+        ax.set_xticklabels(dict["xtickslabels"])
+        ax.legend()
+
+        fig.tight_layout()
+        plt.show()
+
+    def multiple_bars(self, df, nrows, ncols, dict):
+        """
+        Makes a bar chart with mutliple plots in one figure
+        """
+        fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(6, 9.3))
+
+        fig.subplots_adjust(left=0.03, right=0.97, hspace=0.50, wspace=0.05)
+
+        bar_width = 0.35
+        for ax, (key, dat) in zip(axs.flatten(), df):
+            n_groups = len(dat.index)
+            index = np.arange(n_groups)
+
+            # make barchart for permutation test
+            bar1 = ax.bar(index, dat["perm"], bar_width, color='b',
+                      label='Permutation test')
+            # make barchart for t-test
+            bar2 = ax.bar(index + bar_width, dat["t_test"], bar_width, color='r',
+                      label='t-test')
+
+            ax.set_ylabel("Error")
+            ax.set_xticks(index + bar_width / 2)
+            ax.set_xticklabels(dict["xtickslabels"])
+            ax.set_title(f"Effect size = {key}")
+            ax.set_xlabel(f"Group Size")
+            ax.legend()
+
+            for rect, i in zip(bar1 + bar2, dat["sig"]):
+                height = rect.get_height()
+                if i:
+                    ax.text(rect.get_x() + rect.get_width(), height, "**", ha='center', va='bottom')
+
+
+        fig.suptitle(dict["title"], y=1.0, fontsize = 15)
+        fig.tight_layout()
+        plt.show()

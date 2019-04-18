@@ -2,6 +2,7 @@
 # Name: Ruchella Kock
 # Student number: 1815458
 """
+!!!!!!!!!!!DELETE THIS FILE!!!!!!!!!!!!!!!!!!
 This script aims to explore the subquestion:
 How does the permutation test compare to Welch t-test under no violation
 of the assumption of homogeneity of variances?
@@ -30,10 +31,12 @@ class Group_ratio(object):
 
         # groupby sample size
         homo_samp2_typeI = homo_typeI.groupby("samp2")
-        homo_samp2_typeII = homo_typeII.groupby("samp2")
+        print(homo_typeI)
         print(homo_samp2_typeI)
-        for key, item in homo_samp2_typeI:
-            print(homo_samp2_typeI.get_group(key))
+        homo_samp2_typeII = homo_typeII.groupby("samp2")
+        #print(homo_samp2_typeI)
+        for key, item in homo_samp2_typeII:
+            print(homo_samp2_typeII.get_group(key))
 
         # get a dataframe for each type of error
         results_typeI = self.helpers.get_mean_df(homo_samp2_typeI, True)
@@ -44,7 +47,7 @@ class Group_ratio(object):
         # get the latex table for each type of error based on sample size
         typeI_tbl = results_typeI.to_latex()
         typeII_tbl = results_typeII.to_latex()
-        print(f"{typeI_tbl} \n {typeII_tbl}")
+        #print(f"{typeI_tbl} \n {typeII_tbl}")
 
         # helpers.boxplots(homo_samp2, 7, 2, "samp2")
 

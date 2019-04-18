@@ -20,14 +20,19 @@ class Hetero(object):
     This script compares the typeI and typeII error when the homogeneity
     assumption is violated
     """
-    def __init__(self):
+    def __init__(self, df, all_df):
         self.helpers = Helpers()
-        self.gr = Group_ratio()
+        self.df = df
+        self.all = all_df
+        # call the functions in this file
+        self.all_conditions_visualized()
+        self.within_sd_analysis_es()
 
-    def within_sd_analysis_sd(self, df):
+    def all_conditions_visualized(self):
         # group dataframe based on standard deviation and effect size
-        grouped_df = df.groupby(["es", "sd1", "samp2"])
+        grouped_df = self.df.groupby(["es", "sd1", "samp2"])
         results = self.helpers.get_mean_df(grouped_df, False)
+        print(results.sample())
 
         # seperate groups based on typeI or typeII error
         dfs = {"typeI_df": results[:8*7],
@@ -40,12 +45,11 @@ class Hetero(object):
             dictI = {"xlabel": 'Group sizes', "ylabel": "TypeI error",
                      "title": "Mean typeI error per group size",
                      "xtickslabels": sdI}
-            #self.gr.bar_chart(dfs[i], len(dfs[i].index), dictI)
             self.multiple_bars(dfs[i], 2, 2, dictI)
 
-    def within_sd_analysis_es(self, df):
+    def within_sd_analysis_es(self):
         # group dataframe based on standard deviation and effect size
-        grouped_df = df.groupby(["es", "sd1"])
+        grouped_df = self.df.groupby(["es", "sd1"])
         results = self.helpers.get_mean_df(grouped_df, False)
         #print(results)
 
@@ -58,14 +62,14 @@ class Hetero(object):
         dictI = {"xlabel": 'Standard deviation', "ylabel": "TypeI error",
                  "title": "Mean typeI error per standard deviation",
                  "xtickslabels": sdI}
-        self.gr.bar_chart(typeI_df, len(typeI_df.index), dictI)
+        self.helpers.bar_chart(typeI_df, len(typeI_df.index), dictI)
 
         # make a bar chart for typeII error
         sdII = self.get_sd_list(typeII_df, True)
         dictI = {"xlabel": 'Standard deviation', "ylabel": "TypeII error",
                  "title": "Mean typeII error per standard deviation",
                  "xtickslabels": sdII}
-        self.gr.bar_chart(typeII_df, len(typeII_df.index), dictI)
+        self.helpers.bar_chart(typeII_df, len(typeII_df.index), dictI)
 
     def get_sd_list(self, df, bool):
         """
@@ -98,7 +102,6 @@ class Hetero(object):
         # get an index to set the ticks for the x axis
 
         df_new = df.groupby("sd")
-        # print(df_new)
         # for key, item in df_new:
         #     print(df_new.get_group(key))
         for ax, (sd, dat) in zip(axs, df_new):
@@ -106,10 +109,10 @@ class Hetero(object):
             index = np.arange(n_groups)
 
             # make barchart for permutation test
-            ax.bar(index, dat["perm"], bar_width, color='b',
+            bar1 = ax.bar(index, dat["perm"], bar_width, color='b',
                       label='Permutation test')
             # make barchart for t-test
-            ax.bar(index + bar_width, dat["t_test"], bar_width, color='r',
+            bar2 = ax.bar(index + bar_width, dat["t_test"], bar_width, color='r',
                       label='t-test')
             es = dat["effect_size"].iloc[0]
 
@@ -117,6 +120,13 @@ class Hetero(object):
             ax.set_xticks(index + bar_width / 2)
             ax.set_xticklabels(dict["xtickslabels"])
             ax.set_xlabel(f"Mean error for sd = {sd} per group size")
+            print(dat["sig"])
+            print("\n\n")
+            for rect, i in zip(bar1 + bar2, dat["sig"]):
+                height = rect.get_height()
+                if i:
+                    ax.text(rect.get_x() + rect.get_width(), height, "**", ha='center', va='bottom')
+
         ax.legend()
 
         fig.suptitle(f"Effect size = {es}", y=1.0, fontsize = 15)

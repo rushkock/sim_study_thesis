@@ -3,7 +3,7 @@
 # Student number: 1815458
 import pandas as pd
 from helpers import Helpers
-from es import ES
+from individual_sd1_analysis import SD_analysis
 from hetero import Hetero
 from group_ratio import Group_ratio
 
