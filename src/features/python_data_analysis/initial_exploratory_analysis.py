@@ -82,11 +82,6 @@ class Exploratory(object):
         dfs = self.return_list_of_dfs(es_t_test, "sd1")
         value = f"The standard deviations where the t-test outperforms the permutation test \n Sample size = {df_type}"
         self.make_pies(dfs, value, df_type)
-        # note I found no apparent pattern except for the fact that when
-        # there is no violation the tests seem to perform equally well
-        # more specific analyses of the conditions should reveal if there is a
-        # pattern because just looking for the number of violations per condition
-        # is not enough
 
     def pattern_analysis(self, df, df_type):
         """

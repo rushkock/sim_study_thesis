@@ -2,12 +2,8 @@
 # Name: Ruchella Kock
 # Student number: 1815458
 """
-!!!!!!!!!!!!!!! Rename !!!!!!!!!!!!!!!!!!!!!!!!!!
-This script aims to explore the subquestion:
-How does the permutation test compare to Welch t-test under no violation
-of the assumption of homogeneity of variances?
-Variance is equal if standard deviations are equal
-therefore we only look at these cases
+This script gets all condition for a given standard deviation and analyses all
+the conditions in these groups seperately.
 """
 from helpers import Helpers
 
@@ -25,10 +21,31 @@ class SD_analysis(object):
         self.group_all = df_all.groupby("sd1").get_group(sd1)
 
         # Call the functions in this file
-        self.analyze_based_es()
+        #self.analyze_based_es()
         self.analyze_group_ratio(sd1)
+        #self.typeI_error(sd1)
+
+    def typeI_error(self, sd1):
+        """
+        This function looks at how often the typeI error of the t-test
+        is around 0.05. It does this also for the permutation test
+        """
+        es = self.group.groupby("es").get_group(0.0).groupby("samp2")
+        counter_t = 0
+        counter_p = 0
+        for key, item in es:
+            if item.iloc[0]["t_test"] <= 0.06 and item.iloc[0]["t_test"] >= 0.04:
+                counter_t = counter_t + 1
+
+            if item.iloc[0]["perm"] <= 0.06 and item.iloc[0]["perm"] >= 0.04:
+                counter_p = counter_p + 1
+        print(f"{sd1} : t = {counter_t}, p = {counter_p}")
+
 
     def analyze_based_es(self):
+        """
+        This function analyzes the mean effect sizes
+        """
         # groupby effect sizes
         es = self.group.groupby("es")
 
@@ -44,24 +61,14 @@ class SD_analysis(object):
         # means table
         means = self.helpers.means_and_pval(means, es_all)
         print(means)
-        print(means.to_latex())
+        means.to_latex()
 
-        # If we print df we see that for the effect size 0.0 and 0.2 there is a
-        # significant difference between the tests
-        # in effect size 0.0 the t_test(typeI error = 0.052586) has more errors
-        # than the permutation test(typeI error = 0.048571) with a difference
-        # of 0.004014 between the two tests
-        # in effect size 0.2 the permutation test(typeII error = 0.932886) has
-        # more error than the t_test(typeII error = 0.929886) with a difference
-        # of 0.003000
-
-        # I decided not to make a plot because the table is already very clear
-
-        ######################################################################
-        ##################### Analyze group ratios ###########################
-        ######################################################################
 
     def analyze_group_ratio(self, sd1):
+        """
+        This function analyzes the groups seperated per effect size
+        It calls the multiple bars function
+        """
         # groupby effect sizes .. because this is only one group
         # (with only 1 sd1) it means that if we want to analyze group ratios
         # we need to analyze the whole df because the only changes are the

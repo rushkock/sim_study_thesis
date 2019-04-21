@@ -9,8 +9,7 @@ import matplotlib.pyplot as plt
 
 class Helpers(object):
     """
-    General functions such as get the mean or max
-    note improve the info
+    Utility functions used in multiple scripts.
     """
     def __init__(self):
         size = "small_csv"
@@ -22,6 +21,9 @@ class Helpers(object):
             self.sample_order = [1000, 750, 1250, 500, 1500, 250, 1750]
 
     def get_df(self, file):
+        """
+        Read csv of pooled results and transorm it into a pandas dataframe
+        """
         # read csv into dataframe
         df = pd.read_csv(file)
         # rename columns
@@ -34,6 +36,9 @@ class Helpers(object):
         return df
 
     def get_df_all_results(self, file):
+        """
+        Read a csv with all raw results including 0 and 1's
+        """
         # read csv into dataframe
         df = pd.read_csv(file)
         # rename columns
@@ -160,7 +165,6 @@ class Helpers(object):
         indexes = df.index.tolist()
         print(indexes)
         df["index"] = indexes
-        #df["effect_size"] = df["index"].apply(lambda x: x[0])
 
         # make barchart for permutation test
         ax.bar(index, df["perm"], bar_width, color='b', linewidth=4,

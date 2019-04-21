@@ -2,7 +2,7 @@
 # Name: Ruchella Kock
 # Student number: 1815458
 """
-!!!!!!!!!!!DELETE THIS FILE!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!Deprecated -- see individual_sd1_analysis.py!!!!!!!!!!!!!!!!!
 This script aims to explore the subquestion:
 How does the permutation test compare to Welch t-test under no violation
 of the assumption of homogeneity of variances?
@@ -11,7 +11,6 @@ therefore we only look at these cases
 In this script we explore the effect of group ratio on the tests when there is
 no violation of homogeneity
 """
-import pandas as pd
 import matplotlib.pyplot as plt
 from helpers import Helpers
 import numpy as np

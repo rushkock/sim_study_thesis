@@ -8,11 +8,9 @@ of the assumption of homogeneity of variances?
 Variance is equal if standard deviations are equal
 therefore we only look at these cases
 """
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from helpers import Helpers
-from group_ratio import Group_ratio
 
 
 class Hetero(object):
@@ -29,6 +27,10 @@ class Hetero(object):
         self.within_sd_analysis_es()
 
     def all_conditions_visualized(self):
+        """
+        This function visualizes all 224 design rows in 4 plots
+        (seperated by effect size)
+        """
         # group dataframe based on standard deviation and effect size
         grouped_df = self.df.groupby(["es", "sd1", "samp2"])
         results = self.helpers.get_mean_df(grouped_df, False)
@@ -48,6 +50,9 @@ class Hetero(object):
             self.multiple_bars(dfs[i], 2, 2, dictI)
 
     def within_sd_analysis_es(self):
+        """
+        Analyse each standard deviation per effect size and makes bar charts
+        """
         # group dataframe based on standard deviation and effect size
         grouped_df = self.df.groupby(["es", "sd1"])
         results = self.helpers.get_mean_df(grouped_df, False)
