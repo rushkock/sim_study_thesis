@@ -14,28 +14,27 @@ Project Organization
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- All figures produced in data analysis
+    │   └── latex          <- The latex code to produce the final pdf 
+    │   └── pdf            <- All versions of the thesis
     │
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   │   └── R_data_processing   <- Code to turn csv a latex table in R
     │   │
     │   ├── features       <- Scripts for data analysis
-    │   │   └── build_features.py
+    │   │   └── csv        <- Folder with all csv files needed
+    │   │   └── python_data_analysis    <- The files used to analyze data 
     ├   |── simulation      <- Scripts used for the simulation
-    │       └── 
-    │  
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
-
+    │       └── r_code      <- R code for simulation 
+    │       └── r_projects  <- R projects where simulations were performed 
+    │       └── r_results   <- R data with results of simulation (see also src/features/csv for csv files of the results)
 
 --------
 
