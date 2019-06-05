@@ -25,7 +25,7 @@ python main.py
 ```
 
 ### Disclaimer
-This code is not directly executable as the author has paths hard coded and some paths are missing. Comments conatin the authors thoughts and finding and will be rewriten in the next version. Moreover, this code has not been tested on any other laptop or computer.
+This code is not directly executable as the author has paths hard coded and some paths are missing. Comments contain the authors thoughts and findings. Moreover, this code has not been tested on any other laptop or computer.
 
 ## Additional information
 Some scripts and some functions are deprecated but kept as reference for the author. Main.py only calls the files that are in use.
